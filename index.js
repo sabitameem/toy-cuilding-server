@@ -9,9 +9,6 @@ app.use(cors())
 app.use(express.json());
 
 
-
-
-
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.sgocvky.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -28,6 +25,19 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+   
+
+    //to get the data of toys
+    app.post('/addAToy', async(req,res)=>{
+        const addAToy =req.body;
+        console.log(addAToy);
+    })
+
+
+
+
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");

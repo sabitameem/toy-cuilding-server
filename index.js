@@ -25,13 +25,35 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-   
+
+   const addAToyCollections = client.db('addAtoyDB').collection('addAToy');
+
+
+
+
+    app.get('/addAToy', async(req,res)=>{
+        const cursor =addAToyCollections.find();
+        const result = await cursor.toArray();
+        res.send(result);
+    })
 
     //to get the data of toys
-    app.post('/addAToy', async(req,res)=>{
-        const addAToy =req.body;
-        console.log(addAToy);
-    })
+    // ...
+
+app.post('/addAToy', async (req, res) => {
+    const addAToy = req.body;
+  
+    try {
+      await addAToyCollections.insertOne(addAToy);
+      res.status(201).json({ message: 'Toy added successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error adding toy' });
+    }
+  });
+  
+  // ...
+  
 
 
 

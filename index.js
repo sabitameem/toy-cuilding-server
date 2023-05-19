@@ -31,16 +31,44 @@ async function run() {
 
 
 
-    app.get('/addAToy', async(req,res)=>{
-        const cursor =addAToyCollections.find();
+    // app.get('/addAToy', async(req,res)=>{
+    //     const cursor =addAToyCollections.find();
+    //     const result = await cursor.toArray();
+    //     res.send(result);
+    // })
+
+    // //to get the data of toys
+    // // ...
+
+    // app.get('/addAToy', async (req, res) => {
+    //     console.log(req.query.email);
+    //     let query = {};
+    //     if (req.query?.email) {
+    //         query = { email: req.query.email }
+    //     }
+    //     const result = await addAToyCollections.find(query).toArray();
+    //     res.send(result);
+    // })
+  
+    
+    app.get('/addAToy', async (req, res) => {
+        const cursor = addAToyCollections.find();
         const result = await cursor.toArray();
         res.send(result);
-    })
+      });
+  
+      app.get('/addAToy', async (req, res) => {
+        console.log(req.query.email);
+        let query = {};
+        if (req.query?.email) {
+          query = { email: req.query.email };
+        }
+        const result = await addAToyCollections.find(query).toArray();
+        res.send(result);
+      });
 
-    //to get the data of toys
-    // ...
 
-app.post('/addAToy', async (req, res) => {
+  app.post('/addAToy', async (req, res) => {
     const addAToy = req.body;
   
     try {

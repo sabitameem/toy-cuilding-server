@@ -24,9 +24,10 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    //await client.connect();
 
    const addAToyCollections = client.db('addAtoyDB').collection('addAToy');
+   
 
 
 
@@ -51,28 +52,46 @@ async function run() {
     // })
   
     
+    // app.get('/addAToy', async (req, res) => {
+    //     const cursor = addAToyCollections.find();
+    //     const result = await cursor.toArray();
+    //     res.send(result);
+    //   });
+
+    //   app.get('/addAToy', async (req, res) => {
+    //     console.log(req.query.email);
+    //     let query = {};
+    //     if (req.query?.email) {
+    //       query = { email: req.query.email };
+    //     }
+    //     const result = await addAToyCollections.find(query).toArray();
+    //     res.send(result);
+    //   });
+
+//..........................
+
     app.get('/addAToy', async (req, res) => {
         const cursor = addAToyCollections.find();
         const result = await cursor.toArray();
         res.send(result);
       });
   
-      app.get('/addAToy', async (req, res) => {
-        console.log(req.query.email);
-        let query = {};
-        if (req.query?.email) {
-          query = { email: req.query.email };
-        }
-        const result = await addAToyCollections.find(query).toArray();
-        res.send(result);
-      });
-
+    //   app.get('/addAToy', async (req, res) => {
+    //     console.log(req.query.email);
+    //     let query = {};
+    //     if (req.query?.email) {
+    //       query = { email: req.query.email };
+    //     }
+    //     const result = await addAToyCollections.find(query).toArray();
+    //     res.send(result);
+    //   });
+    
 
   app.post('/addAToy', async (req, res) => {
-    const addAToy = req.body;
+    const allToys = req.body;
   
     try {
-      await addAToyCollections.insertOne(addAToy);
+      await addAToyCollections.insertOne(allToys);
       res.status(201).json({ message: 'Toy added successfully' });
     } catch (error) {
       console.error(error);
@@ -80,7 +99,7 @@ async function run() {
     }
   });
   
-  // ...
+  // ......................................................
   
 
 

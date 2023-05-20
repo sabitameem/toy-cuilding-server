@@ -75,7 +75,8 @@ async function run() {
         const result = await cursor.toArray();
         res.send(result);
       });
-   //..........vercel deploy
+   
+
       app.get('/addAToy/:id', async (req, res) => {
         const id = req.params.id;
         const query = { _id: new ObjectId(id) };
@@ -84,19 +85,22 @@ async function run() {
       });
       
 
+    //didn't work properly
+    app.get('/addAToy', async(req,res)=>{
+        console.log(req.query);
+        // let query={};
+        // if(req.query?.sellerEmail){
+        //     query={sellerEmail: req.query.sellerEmail}
+        // }
+        const result = await addAToyCollections.find().toArray()
+        res.send(result);
+    })
+    
+   
     
 
 
   
-    //   app.get('/addAToy', async (req, res) => {
-    //     console.log(req.query.email);
-    //     let query = {};
-    //     if (req.query?.email) {
-    //       query = { email: req.query.email };
-    //     }
-    //     const result = await addAToyCollections.find(query).toArray();
-    //     res.send(result);
-    //   });
     
 
   app.post('/addAToy', async (req, res) => {

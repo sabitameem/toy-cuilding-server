@@ -27,56 +27,14 @@ async function run() {
     //await client.connect();
 
    const addAToyCollections = client.db('addAtoyDB').collection('addAToy');
-   
-
-
-
-
+  
     // app.get('/addAToy', async(req,res)=>{
     //     const cursor =addAToyCollections.find();
     //     const result = await cursor.toArray();
     //     res.send(result);
     // })
 
-    // //to get the data of toys
-    // // ...
-
-    // app.get('/addAToy', async (req, res) => {
-    //     console.log(req.query.email);
-    //     let query = {};
-    //     if (req.query?.email) {
-    //         query = { email: req.query.email }
-    //     }
-    //     const result = await addAToyCollections.find(query).toArray();
-    //     res.send(result);
-    // })
-  
-    
-    // app.get('/addAToy', async (req, res) => {
-    //     const cursor = addAToyCollections.find();
-    //     const result = await cursor.toArray();
-    //     res.send(result);
-    //   });
-
-    //   app.get('/addAToy', async (req, res) => {
-    //     console.log(req.query.email);
-    //     let query = {};
-    //     if (req.query?.email) {
-    //       query = { email: req.query.email };
-    //     }
-    //     const result = await addAToyCollections.find(query).toArray();
-    //     res.send(result);
-    //   });
-
-//..........................
-
-    app.get('/addAToy', async (req, res) => {
-        const cursor = addAToyCollections.find();
-        const result = await cursor.toArray();
-        res.send(result);
-      });
-   
-
+  //Toys details
       app.get('/addAToy/:id', async (req, res) => {
         const id = req.params.id;
         const query = { _id: new ObjectId(id) };
@@ -84,25 +42,8 @@ async function run() {
         res.send(toyData);
       });
       
-
-    //didn't work properly
-    app.get('/addAToy', async(req,res)=>{
-        console.log(req.query);
-        // let query={};
-        // if(req.query?.sellerEmail){
-        //     query={sellerEmail: req.query.sellerEmail}
-        // }
-        const result = await addAToyCollections.find().toArray()
-        res.send(result);
-    })
-    
-   
-    
-
-
-  
-    
-
+ 
+//add all Toys
   app.post('/addAToy', async (req, res) => {
     const allToys = req.body;
   
@@ -116,6 +57,50 @@ async function run() {
   });
 
 
+
+
+  //my toys 
+  app.get('/addAToy', async(req,res)=>{
+    console.log(req.query.sellerEmail);
+    let query ={};
+    if(req.query?.sellerEmail){
+        query ={sellerEmail : req.query.sellerEmail};
+    }
+    const myToys = await addAToyCollections.find(query).toArray()
+    res.send(myToys)
+  })
+ 
+
+  //update from myToy
+   app.put('/addAToy/:id', async(req, res) => {
+    const id = req.params.id;
+    const filter = {_id: new ObjectId(id)}
+     const options = { upsert: true };
+     const updatedToy = req.body;
+
+    const Toy = {
+        $set: {
+            price: updatedToy.price, 
+            availableQuantity: updatedToy.availableQuantity, 
+            description: updatedToy.description, 
+            
+        }
+    }
+
+     const result = await addAToyCollections.updateOne(filter, Toy, options);
+     res.send(result);
+ })
+  
+
+
+
+  //delete from myToys
+ app.delete('/addAToy/:id', async(req,res)=>{
+    const id = req.params.id;
+    const query={_id: new ObjectId(id)}
+    const result= await addAToyCollections.deleteOne(query);
+    res.send(result);
+  })
  
   
   // ......................................................
